@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 19:26:38 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/09/22 21:21:08 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/09/23 20:23:34 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,10 @@ int	main(int argc, char **argv)
 		py++;
 	}
 	mlx_put_image_to_window(data.mlx, data.mlx_win, data.img, 0, 0);
+	mlx_key_hook(data.mlx_win, &close_window_esc, &data);
+	mlx_hook(data.mlx_win, 17, 0, close_window_button, &data);
+
 	mlx_loop(data.mlx);
+
 	return 0;
 }

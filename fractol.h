@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:41:52 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/09/22 19:21:30 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/09/23 20:14:20 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 # include <mlx.h>
+# include <stdlib.h>
 # define WIDTH 800
 # define HEIGHT 800
 # define MAX_ITER 500
@@ -34,6 +35,8 @@ typedef struct s_fractol
 
 }			t_fractol;
 
+int	close_window_esc(int keycode, t_fractol *data);
+int	close_window_button(t_fractol *data);
 
 
 #endif
