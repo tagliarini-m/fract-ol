@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 19:26:38 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/09/23 20:23:34 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/09/24 21:56:59 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,56 @@ int	get_color_bg(int iter)
 	int		b;
 
 	t = (double)iter / MAX_ITER;
-	// r = (int)(9 * (1 - t) * t * t * t * 255);
+	// r = (int)(9 * (1 - t) * t * t * t * 256);
 	r = 0;
-	g = (int)(100 * (1 - t) * (1 - t) * t * t * 256);
-	b = (int)(30 * (1 - t) * (1 - t) * (1 - t) * t * 256);
+	g = (int)(16 * (1 - t) * (1 - t) * t * t * 256);
+	b = (int)(9 * (1 - t) * (1 - t) * (1 - t) * t * 256);
 	return ((r << 16) | (b << 8) | g);
+}
+
+
+
+int	calculate_mandelbrot(t_complex z, t_complex c, int iter)
+{
+	double	xtemp;
+	z.re = 0.0;
+	z.im = 0.0;
+	while (z.re*z.re + z.im * z.im <= 4.0 && iter < MAX_ITER)
+	{
+		xtemp = z.re * z.re - z.im*z.im + c.re;
+		z.im = 2*z.re * z.im + c.im;
+		z.re = xtemp;
+		iter++;
+	}
+
+	return (iter);
+}
+
+void	draw_mandelbrot(t_fractol *data, int x, int y)
+{
+	t_complex	c;
+	t_complex	z;
+	int			iter;
+	int			color;
+	while (y < HEIGHT)
+	{
+		c.im = -2.0 + y * (4.0 / HEIGHT);
+		x = 0;
+		while (x < WIDTH)
+		{
+			c.re = -2.0 + x * (4.0 / WIDTH);
+			iter = calculate_mandelbrot(z, c, 0);
+			if (iter == MAX_ITER)
+			my_mlx_pixel_put(data, x, y, 0x000000);
+			else
+			{
+				color = get_color_bg(iter);
+				my_mlx_pixel_put(data, x, y, color);
+			}
+			x++;
+		}
+		y++;
+	}
 }
 
 int	main(int argc, char **argv)
@@ -66,48 +111,7 @@ int	main(int argc, char **argv)
 	data.img = mlx_new_image(data.mlx, 800, 800);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.line_len, &data.endian);
 
-	int			iter;
-	double		xtemp;
-	int			x;
-	int			y;
-	double		cx;
-	double		cy;
-	int			px;
-	int			py;
-	double		zx;
-	double		zy;
-	int			color;
-
-	px = 0;
-	py = 0;
-	while (py < HEIGHT)
-	{
-		cy = -2.0 + py * (4.0 / HEIGHT);
-		px = 0;
-		while (px < WIDTH)
-		{
-			cx = -2.0 + px * (4.0 / WIDTH);
-			zx = 0.0;
-			zy = 0.0;
-			iter = 0;
-			while (zx*zx + zy*zy <= 4.0 && iter < MAX_ITER)
-			{
-				xtemp = zx*zx - zy*zy + cx;
-				zy = 2*zx*zy + cy;
-				zx = xtemp;
-				iter++;
-			}
-			if (iter == MAX_ITER)
-				my_mlx_pixel_put(&data, px, py, 0x000000);
-			else
-			{
-				color = get_color_bg(iter);
-				my_mlx_pixel_put(&data, px, py, color);
-			}
-			px++;
-		}
-		py++;
-	}
+	draw_mandelbrot(&data, 0, 0);
 	mlx_put_image_to_window(data.mlx, data.mlx_win, data.img, 0, 0);
 	mlx_key_hook(data.mlx_win, &close_window_esc, &data);
 	mlx_hook(data.mlx_win, 17, 0, close_window_button, &data);

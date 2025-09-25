@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 19:02:59 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/09/23 20:29:21 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/09/24 20:17:21 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ int	close_window_button(t_fractol *data)
 	return (0);
 }
 
-int	zoom_handle(int keycode)
-{
-
-}
+// int	zoom_handle(int keycode)
+// {
+// 	if (button == 4)
+// 	{
+// 		cx *= 1.1
+// 		cy *= 1.1
+// 	}
+// }
