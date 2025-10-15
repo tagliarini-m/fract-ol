@@ -37,7 +37,8 @@ SRC = ft_isalnum.c \
 	ft_putchar_fd.c \
 	ft_putstr_fd.c \
 	ft_putendl_fd.c \
-	ft_putnbr_fd.c
+	ft_putnbr_fd.c \
+	ft_atof.c
 
 SRC_BONUS = ft_lstnew_bonus.c \
 	ft_lstadd_front_bonus.c \
@@ -56,24 +57,24 @@ RM = rm -f
 
 
 ifeq ($(findstring bonus,$(MAKECMDGOALS)),bonus)
-	OBJ += $(OBJ_BONUS)
+	@OBJ += $(OBJ_BONUS)
 endif
 
 all: ${NAME}
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+	@ar rcs $(NAME) $(OBJ)
 
 bonus: all
 
 %.o: %.c
-	${CC} ${CC_FLAGS} -c $< -o $@
+	@${CC} ${CC_FLAGS} -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(OBJ_BONUS)
+	@$(RM) $(OBJ) $(OBJ_BONUS)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 

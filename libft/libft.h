@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 20:24:46 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/08/05 20:02:52 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/15 19:37:00 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+double	ft_atof(char *string);
 
 #endif

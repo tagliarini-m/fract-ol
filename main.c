@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 19:26:38 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/10/02 21:33:42 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/15 20:28:19 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ int	get_color_bg(int iter)
 	int		b;
 
 	t = (double)iter / MAX_ITER;
-	r = (int)(25 * (1 - t) * t * t * t * 256);
-	//r = 0;
-	g = (int)(10 * (1 - t) * (1 - t) * t * t * 256);
+	r = (int)(10 * (1 - t) * t * t * t * 256);
+	g = (int)(15 * (1 - t) * (1 - t) * t * t * 256);
 	b = (int)(9 * (1 - t) * (1 - t) * (1 - t) * t * 256);
 	return ((r << 16) | (b << 8) | g);
 }
@@ -52,21 +51,27 @@ int	calculate_fractal(t_complex z, t_complex c, int iter)
 	}
 	return (iter);
 }
-
-void	draw_julia(t_fractol *data, int x, int y)
+t_complex	set_julia(t_fractol *data)
 {
 	t_complex	c;
-
-	int			iter;
-	int			color;
 
 	if (!data->julia_re || !data->julia_im)
 	{
 		data->julia_re = 0.285;
 		data->julia_im = 0;
 	}
-	c.re = data->julia_re; 
+	c.re = data->julia_re;
 	c.im = data->julia_im;
+	return (c);
+}
+
+void	draw_julia(t_fractol *data, int x, int y)
+{
+	t_complex	c;
+	int			iter;
+	int			color;
+
+	c = set_julia(data);
 	y = -1;
 	while (++y < HEIGHT)
 	{
@@ -127,31 +132,37 @@ void	window_init(t_fractol *data)
 	data->shift_y = 0.0;
 }
 
-int	argv_validation(int argc, char **argv, t_fractol *data)
+void	mandelbrot_validation(t_fractol *data)
 {
-	if (argc == 2 && !ft_strncmp(argv[1], "mandelbrot", 11))
-	{
 		data->name = "mandelbrot";
 		window_init(data);
 		draw_mandelbrot(data, -1, -1);
-	}
-	else if (argc == 2 && !ft_strncmp(argv[1], "julia", 6))
+}
+
+void	julia_validation(t_fractol *data, int argc, char **argv)
+{
+	data->name = "julia";
+	window_init(data);
+	draw_julia(data, -1, -1);
+	if (argc == 4)
 	{
-		data->name = "julia";
-		window_init(data);
-		draw_julia(data, -1, -1);
+	data->name = "julia";
+	data->julia_re =  ft_atof(argv[2]);
+	data->julia_im =  ft_atof(argv[3]);
+	window_init(data);
+	draw_julia(data, -1, -1);
 	}
-	else if (argc > 2 && !ft_strncmp(argv[1], "julia", 6))
-	{
-		data->name = "julia";
-		data->julia_re =  atof(argv[2]);
-		data->julia_im =  atof(argv[3]);
-		window_init(data);
-		draw_julia(data, -1, -1);
-	}
+}
+
+int	argv_validation(int argc, char **argv, t_fractol *data)
+{
+	if (argc == 2 && !ft_strncmp(argv[1], "mandelbrot", 11))
+		mandelbrot_validation(data);
+	else if ((argc == 2 || argc == 4) && !ft_strncmp(argv[1], "julia", 6))
+		julia_validation(data, argc, argv);
 	else
 	{
-		ft_putstr_fd("ERROR\n enter one of the options:\n \t./fractol mandelbrot\n \t./fractol julia", 1);
+		ft_putstr_fd("ERROR\n enter one of the options:\n \t./fractol mandelbrot\n \t./fractol julia\n", 1);
 		return (1);
 	}
 	return (0);
@@ -167,8 +178,8 @@ int	main(int argc, char **argv)
 	mlx_key_hook(data.mlx_win, &key_handle, &data);
 	mlx_mouse_hook(data.mlx_win, zoom_handle, &data);
 	mlx_hook(data.mlx_win, 17, 0, close_window_button, &data);
-
+	data.lock_julia = 1;
+	mlx_hook(data.mlx_win, 6, 1L << 6, julia_motion, &data);
 	mlx_loop(data.mlx);
-
 	return 0;
 }
