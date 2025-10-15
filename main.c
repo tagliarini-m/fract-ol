@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdlib.h>
 
 void	my_mlx_pixel_put(t_fractol *data, int x, int y, int color)
 {
@@ -30,8 +31,8 @@ int	get_color_bg(int iter)
 	int		b;
 
 	t = (double)iter / MAX_ITER;
-	// r = (int)(25 * (1 - t) * t * t * t * 256);
-	r = 0;
+	r = (int)(25 * (1 - t) * t * t * t * 256);
+	//r = 0;
 	g = (int)(10 * (1 - t) * (1 - t) * t * t * 256);
 	b = (int)(9 * (1 - t) * (1 - t) * (1 - t) * t * 256);
 	return ((r << 16) | (b << 8) | g);
@@ -39,7 +40,7 @@ int	get_color_bg(int iter)
 
 
 
-int	calculate_mandelbrot(t_complex z, t_complex c, int iter)
+int	calculate_fractal(t_complex z, t_complex c, int iter)
 {
 	double	xtemp;
 	while (z.re*z.re + z.im * z.im <= 4.0 && iter < MAX_ITER)
@@ -55,21 +56,26 @@ int	calculate_mandelbrot(t_complex z, t_complex c, int iter)
 void	draw_julia(t_fractol *data, int x, int y)
 {
 	t_complex	c;
-	t_complex	z;
+
 	int			iter;
 	int			color;
 
-	z.re = x;
-	z.im = y;
-	// y = -1;
+	if (!data->julia_re || !data->julia_im)
+	{
+		data->julia_re = 0.285;
+		data->julia_im = 0;
+	}
+	c.re = data->julia_re; 
+	c.im = data->julia_im;
+	y = -1;
 	while (++y < HEIGHT)
 	{
-		c.im = -(y - HEIGHT/2) * (4.0 / data->zoom) / HEIGHT + data->shift_y;
-		// x = -1;
+		data->z.im = -(y - HEIGHT/2) * (4.0 / data->zoom) / HEIGHT + data->shift_y;
+		x = -1;
 		while (++x < WIDTH)
 		{
-			c.re = (x - WIDTH/2) * (4.0 / data->zoom) /  WIDTH + data->shift_x;
-			iter = calculate_mandelbrot(z, c, 0);
+			data->z.re = (x - WIDTH/2) * (4.0 / data->zoom) / WIDTH + data->shift_x;
+			iter = calculate_fractal(data->z, c, 0);
 			if (iter >= MAX_ITER)
 				my_mlx_pixel_put(data, x, y, 0x000000);
 			else
@@ -98,7 +104,7 @@ void	draw_mandelbrot(t_fractol *data, int x, int y)
 		while (++x < WIDTH)
 		{
 			c.re = (x - WIDTH/2) * (4.0 / data->zoom) /  WIDTH + data->shift_x;
-			iter = calculate_mandelbrot(z, c, 0);
+			iter = calculate_fractal(z, c, 0);
 			if (iter >= MAX_ITER)
 				my_mlx_pixel_put(data, x, y, 0x000000);
 			else
@@ -132,6 +138,14 @@ int	argv_validation(int argc, char **argv, t_fractol *data)
 	else if (argc == 2 && !ft_strncmp(argv[1], "julia", 6))
 	{
 		data->name = "julia";
+		window_init(data);
+		draw_julia(data, -1, -1);
+	}
+	else if (argc > 2 && !ft_strncmp(argv[1], "julia", 6))
+	{
+		data->name = "julia";
+		data->julia_re =  atof(argv[2]);
+		data->julia_im =  atof(argv[3]);
 		window_init(data);
 		draw_julia(data, -1, -1);
 	}

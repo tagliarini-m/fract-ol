@@ -75,7 +75,10 @@ int	redraw(t_fractol *data)
 	mlx_destroy_image(data->mlx, data->img);
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->line_len, &data->endian);
-	draw_mandelbrot(data, 0, 0);
+	if (!ft_strncmp(data->name, "mandelbrot", 11))
+		draw_mandelbrot(data, -1, -1);
+	if (!ft_strncmp(data->name, "julia", 6))
+		draw_julia(data, -1, -1);
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
 	data->redraw = 0;
 	return (0);
@@ -106,16 +109,3 @@ int	zoom_handle(int button, int x, int y, t_fractol *data)
 	return (0);
 }
 
-
-
-
-
-	// mpy = env->fract->y_offset - (y - env->window->height / 2.0f) * (4.0f
-	// 		/ env->fract->zoom) / env->window->height;
-
-	// env->fract->zoom *= zoom;
-
-
-	// env->fract->y_offset = mpy + (y - env->window->height / 2.0f) * (4.0f
-	// 		/ env->fract->zoom) / env->window->height;
-	// ft_calc_coordinate(env->fract, env->window, x, y);

@@ -34,6 +34,13 @@
 # define LT_KEY 0xff51
 # define RT_KEY 0xff53
 
+
+typedef struct s_complex
+{
+	double	re;
+	double	im;
+}			t_complex;
+
 typedef struct s_fractol
 {
 	void	*mlx;
@@ -48,14 +55,10 @@ typedef struct s_fractol
 	double	shift_y;
 	int		redraw;
 	char	*name;
-
+	double	julia_re;
+	double	julia_im;
+	t_complex	z;
 }			t_fractol;
-
-typedef struct s_complex
-{
-	double	re;
-	double	im;
-}			t_complex;
 
 
 int		key_handle(int keycode, t_fractol *data);
@@ -65,7 +68,8 @@ int		zoom_handle(int button, int x, int y, t_fractol *data);
 int		ft_strncmp(const char *str1, const char *str2, size_t count);	
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
-
+void	draw_mandelbrot(t_fractol *data, int x, int y);
+void	draw_julia(t_fractol *data, int x, int y);
 
 
 
