@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 19:02:59 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/10/15 20:31:02 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/15 20:34:35 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ int	key_handle(int keycode, t_fractol *data)
 	}
 	arrow_keys_handle(keycode, data);
 	if (keycode == L_KEY)
-		data->lock_julia *= -1;t_complex	c;
-
+		data->lock_julia *= -1;
 	if (data->redraw == 1)
 		redraw(data);
 	return (0);
