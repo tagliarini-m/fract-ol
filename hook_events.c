@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 19:02:59 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/10/15 20:34:35 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/21 20:50:09 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int	key_handle(int keycode, t_fractol *data)
 	}
 	arrow_keys_handle(keycode, data);
 	if (keycode == L_KEY)
+	{
 		data->lock_julia *= -1;
+		data->redraw = 1;
+	}
 	if (data->redraw == 1)
 		redraw(data);
 	return (0);
@@ -76,8 +79,21 @@ int	redraw(t_fractol *data)
 	if (!ft_strncmp(data->name, "mandelbrot", 11))
 		draw_mandelbrot(data, -1, -1);
 	if (!ft_strncmp(data->name, "julia", 6))
+	{
 		draw_julia(data, -1, -1);
+	}
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
+
+	if (data->lock_julia == 1)
+	{
+		mlx_string_put(data->mlx, data->mlx_win, 25, 50, 0xffff0000, "movement:off");
+		mlx_string_put(data->mlx, data->mlx_win, 25, 38, 0xffffffff, "Press L");
+	}
+	if (data->lock_julia == -1)
+	{
+		mlx_string_put(data->mlx, data->mlx_win, 25, 50, 0xff00ff00, "movement:on");
+		mlx_string_put(data->mlx, data->mlx_win, 25, 38, 0xffffffff, "Press L");
+	}
 	data->redraw = 0;
 	return (0);
 }

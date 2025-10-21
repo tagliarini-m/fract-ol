@@ -6,17 +6,18 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:41:52 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/10/15 20:10:46 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/21 20:05:20 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
-# include <mlx.h>
+# include "mlx/mlx.h"
 # include "libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
+# include <math.h>
 
 
 # define WIDTH 800
