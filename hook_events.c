@@ -6,7 +6,7 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 19:02:59 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/10/23 04:48:55 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/23 04:51:54 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,3 @@ int	zoom_handle(int button, int x, int y, t_fractol *data)
 		redraw(data);
 	return (0);
 }
-
-// int	julia_motion(int x, int y, t_fractol *data)
-// {
-// 	if (data->lock_julia == -1)
-// 	{
-// 		data->julia_re = data->shift_x + (x - WIDTH / 2.0)
-// 			* ((4.0 / data->zoom) / WIDTH);
-// 		data->julia_im = data->shift_y - (y - HEIGHT / 2.0)
-// 			* ((4.0 / data->zoom) / HEIGHT);
-// 		data->redraw = 1;
-// 	}
-// 	if (data->redraw == 1)
-// 		redraw(data);
-// 	return (0);
-// }
