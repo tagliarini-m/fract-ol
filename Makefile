@@ -4,6 +4,9 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra
 SRCS = main.c \
 	hook_events.c \
+	hook_utils.c \
+	utils.c \
+	validations.c \
 
 OBJS = ${SRCS:.c=.o}
 LIBFT = libft/libft.a

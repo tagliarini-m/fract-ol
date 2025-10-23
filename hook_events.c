@@ -6,15 +6,15 @@
 /*   By: mgomes-t <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 19:02:59 by mgomes-t          #+#    #+#             */
-/*   Updated: 2025/10/21 20:50:09 by mgomes-t         ###   ########.fr       */
+/*   Updated: 2025/10/23 00:15:53 by mgomes-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	redraw(t_fractol *data);
+// int	redraw(t_fractol *data);
 
-void	arrow_keys_handle(int keycode, t_fractol *data)
+static void	arrow_keys_handle(int keycode, t_fractol *data)
 {
 	if (keycode == UP_KEY)
 	{
@@ -71,38 +71,43 @@ int	close_window_button(t_fractol *data)
 	return (0);
 }
 
-int	redraw(t_fractol *data)
-{
-	mlx_destroy_image(data->mlx, data->img);
-	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->line_len, &data->endian);
-	if (!ft_strncmp(data->name, "mandelbrot", 11))
-		draw_mandelbrot(data, -1, -1);
-	if (!ft_strncmp(data->name, "julia", 6))
-	{
-		draw_julia(data, -1, -1);
-	}
-	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
+// void	julia_lock(t_fractol *data)
+// {
+// 	if (data->lock_julia == 1)
+// 	{
+// 		mlx_string_put(data->mlx, data->mlx_win, 25, 50, RED, "movement:off");
+// 		mlx_string_put(data->mlx, data->mlx_win, 25, 38, WHITE, "Press L");
+// 	}
+// 	if (data->lock_julia == -1)
+// 	{
+// 		mlx_string_put(data->mlx, data->mlx_win, 25, 50, GREEN, "movement:on");
+// 		mlx_string_put(data->mlx, data->mlx_win, 25, 38, WHITE, "Press L");
+// 	}
+// }
 
-	if (data->lock_julia == 1)
-	{
-		mlx_string_put(data->mlx, data->mlx_win, 25, 50, 0xffff0000, "movement:off");
-		mlx_string_put(data->mlx, data->mlx_win, 25, 38, 0xffffffff, "Press L");
-	}
-	if (data->lock_julia == -1)
-	{
-		mlx_string_put(data->mlx, data->mlx_win, 25, 50, 0xff00ff00, "movement:on");
-		mlx_string_put(data->mlx, data->mlx_win, 25, 38, 0xffffffff, "Press L");
-	}
-	data->redraw = 0;
-	return (0);
-}
+// int	redraw(t_fractol *data)
+// {
+// 	mlx_destroy_image(data->mlx, data->img);
+// 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+// 	data->addr = mlx_get_data_addr(data->img, &data->bpp,
+// 			&data->line_len, &data->endian);
+// 	if (!ft_strncmp(data->name, "mandelbrot", 11))
+// 		draw_mandelbrot(data, -1, -1);
+// 	if (!ft_strncmp(data->name, "julia", 6))
+// 	{
+// 		draw_julia(data, -1, -1);
+// 	}
+// 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
+// 	julia_lock(data);
+// 	data->redraw = 0;
+// 	return (0);
+// }
 
 int	zoom_handle(int button, int x, int y, t_fractol *data)
 {
-	double pos_x;
+	double	pos_x;
+	double	pos_y;
 
-	double pos_y;
 	pos_x = data->shift_x + (x - WIDTH / 2.0) * ((4.0 / data->zoom) / WIDTH);
 	pos_y = data->shift_y - (y - HEIGHT / 2.0) * ((4.0 / data->zoom) / HEIGHT);
 	if (button == 4)
@@ -123,15 +128,18 @@ int	zoom_handle(int button, int x, int y, t_fractol *data)
 		redraw(data);
 	return (0);
 }
-int	julia_motion(int x, int y, t_fractol *data)
-{
-	if (data->lock_julia == -1)
-	{
-		data->julia_re = data->shift_x + (x - WIDTH / 2.0) * ((4.0 / data->zoom) / WIDTH);
-		data->julia_im = data->shift_y - (y - HEIGHT / 2.0) * ((4.0 / data->zoom) / HEIGHT);
-		data->redraw = 1;
-	}
-	if (data->redraw == 1)
-		redraw(data);
-	return (0);
-}
+
+// int	julia_motion(int x, int y, t_fractol *data)
+// {
+// 	if (data->lock_julia == -1)
+// 	{
+// 		data->julia_re = data->shift_x + (x - WIDTH / 2.0)
+// 			* ((4.0 / data->zoom) / WIDTH);
+// 		data->julia_im = data->shift_y - (y - HEIGHT / 2.0)
+// 			* ((4.0 / data->zoom) / HEIGHT);
+// 		data->redraw = 1;
+// 	}
+// 	if (data->redraw == 1)
+// 		redraw(data);
+// 	return (0);
+// }
